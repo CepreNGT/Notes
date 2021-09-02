@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_view_margin"
         android:layout_weight="4"
-        android:text="1234567"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <TextView
@@ -19,7 +18,6 @@
         android:layout_width="@dimen/zero_size"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_view_margin"
-        android:layout_weight="1"
-        android:text="1234567" />
+        android:layout_weight="1" />
 
 </LinearLayout>
