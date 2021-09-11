@@ -43,22 +43,10 @@ public class MainActivity extends AppCompatActivity implements NotesListFragment
     @Override
     public void onNoteClicked(Notes note) {
         selectedNote = note;
-        if (getResources().getBoolean(R.bool.isLandscape)) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, listFragment, null)
-                    .commit();
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.details_container, NoteDetailsFragment.newInstance(note), null)
-                    .commit();
-        } else {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.container, NoteDetailsFragment.newInstance(note), null)
-                    .addToBackStack("Note")
-                    .commit();
-        }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, listFragment, null)
+                .commit();
     }
 
     @Override
