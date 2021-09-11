@@ -2,10 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/find_key"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="@string/action_find"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:id="@+id/add_key"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/action_add"
         app:showAsAction="ifRoom" />
 
     <item
