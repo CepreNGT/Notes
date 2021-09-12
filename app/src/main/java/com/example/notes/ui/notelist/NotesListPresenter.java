@@ -1,9 +1,6 @@
 package com.example.notes.ui.notelist;
 
-import com.example.notes.domain.Notes;
 import com.example.notes.domain.NotesRepository;
-
-import java.util.List;
 
 public class NotesListPresenter {
 
@@ -16,7 +13,10 @@ public class NotesListPresenter {
     }
 
     public void requestNotes() {
-        List<Notes> list = repository.getNotes();
-        view.showNotes(list);
+        view.showProgress();
+        repository.getNotes(data -> {
+            view.showNotes(data);
+            view.hideProgress();
+        });
     }
 }
