@@ -6,4 +6,9 @@
     <string name="action_one">Action One</string>
     <string name="action_two">Action Two</string>
     <string name="action_add">Add</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_save">Save</string>
+    <string name="info_fragment_text">INFO</string>
+    <string name="action_notes">Notes</string>
 </resources>

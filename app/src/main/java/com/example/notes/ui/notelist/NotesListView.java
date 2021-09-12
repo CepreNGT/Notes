@@ -11,4 +11,8 @@ public interface NotesListView {
     void showProgress();
 
     void hideProgress();
+
+    void onNoteAdded(Notes note);
+
+    void onNoteRemoved(Notes selectedNote);
 }

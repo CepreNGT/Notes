@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,22 +17,36 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.notes.R;
 import com.example.notes.domain.DeviceNotesRepository;
 import com.example.notes.domain.Notes;
+import com.example.notes.ui.Router;
+import com.example.notes.ui.RouterHolder;
+import com.example.notes.ui.detail.NoteDetailFragment;
 
 import java.util.List;
 
 public class NotesListFragment extends Fragment implements NotesListView {
 
-    public static final String KEY_SELECTED_NOTE = "KEY_SELECTED_NOTE";
-    public static final String ARG_NOTE = "ARG_NOTE";
     private NotesAdapter adapter;
     private NotesListPresenter presenter;
-    private OnNoteClicked onNoteClicked;
     private ProgressBar progressBar;
+    private RecyclerView container;
+    private Router router;
+    private boolean wasNotesRequested;
 
     @Override
     public void showNotes(List<Notes> notes) {
         adapter.setNotes(notes);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (context instanceof RouterHolder) {
+            router = ((RouterHolder) context).getRouter();
+        } else if (getParentFragment() instanceof RouterHolder) {
+            router = ((RouterHolder) getParentFragment()).getRouter();
+        }
     }
 
     @Override
@@ -44,31 +57,26 @@ public class NotesListFragment extends Fragment implements NotesListView {
     @Override
     public void hideProgress() {
         progressBar.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void onNoteAdded(Notes note) {
+        adapter.addNote(note);
+        adapter.notifyItemInserted(adapter.getItemCount() - 1);
+        container.smoothScrollToPosition(adapter.getItemCount() - 1);
+    }
+
+    @Override
+    public void onNoteRemoved(Notes selectedNote) {
+        int position = adapter.removeNote(selectedNote);
+        adapter.notifyItemRemoved(position);
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        adapter = new NotesAdapter();
-        presenter = new NotesListPresenter(this, new DeviceNotesRepository());
-
-        adapter.setListener(note -> Toast.makeText(requireContext(), note.getName(), Toast.LENGTH_SHORT).show());
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        if (context instanceof OnNoteClicked) {
-            onNoteClicked = (OnNoteClicked) context;
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        onNoteClicked = null;
-        super.onDetach();
+        adapter = new NotesAdapter(this);
+        presenter = new NotesListPresenter(this, DeviceNotesRepository.INSTANCE);
     }
 
     @Nullable
@@ -80,29 +88,40 @@ public class NotesListFragment extends Fragment implements NotesListView {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView container = view.findViewById(R.id.notes_list);
+        getParentFragmentManager()
+                .setFragmentResultListener(NoteDetailFragment.KEY_NOTE_RESULT, getViewLifecycleOwner(), (requestKey, result) -> {
+                    Notes note = result.getParcelable(NoteDetailFragment.RESULT_NOTE_KEY);
+                    boolean removed = result.getBoolean(NoteDetailFragment.REMOVED_NOTE_KEY);
+                    if (!removed) {
+                        int index = adapter.editNote(note);
+                        adapter.notifyItemChanged(index);
+                    } else {
+                        presenter.removeNote(note);
+                    }
+                });
+
+        container = view.findViewById(R.id.notes_list);
         container.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
         container.setAdapter(adapter);
         progressBar = view.findViewById(R.id.progress_bar);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setOnMenuItemClickListener(menuItem -> {
-            if (menuItem.getItemId() == R.id.info_key) {
-                Toast.makeText(requireContext(), "INFO", Toast.LENGTH_SHORT).show();
-                return true;
-            }
             if (menuItem.getItemId() == R.id.add_key) {
-                Toast.makeText(requireContext(), "ADD", Toast.LENGTH_SHORT).show();
+                presenter.addNote("Unnamed", "No description");
                 return true;
             }
             return false;
         });
 
-        presenter.requestNotes();
-
-    }
-
-    public interface OnNoteClicked {
-        void onNoteClicked(Notes notes);
+        adapter.setListener(note -> {
+            if (router != null) {
+                router.showNote(note);
+            }
+        });
+        if (!wasNotesRequested) {
+            presenter.requestNotes();
+            wasNotesRequested = true;
+        }
     }
 }
