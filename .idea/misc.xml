@@ -3,13 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/drawable/ic_baseline_notes_24.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout-land/activity_main.xml" value="0.43072916666666666" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout/activity_notes_details.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_info.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_note_detail.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_note_details.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_note_edit.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout/fragment_notes_list.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout/item_note.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/layout/main_fragment.xml" value="0.33" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/menu/delete_edit_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/menu/main_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/menu/menu_navigation.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/ASUS/AndroidStudioProjects/Notes/app/src/main/res/menu/navigation_menu.xml" value="0.36666666666666664" />
       </map>
     </option>

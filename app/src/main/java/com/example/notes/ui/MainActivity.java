@@ -1,59 +1,28 @@
 package com.example.notes.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
+import androidx.fragment.app.Fragment;
 
 import com.example.notes.R;
-import com.example.notes.domain.Notes;
-import com.example.notes.ui.notedetails.NoteDetailsFragment;
-import com.example.notes.ui.notelist.NotesListFragment;
-import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NotesListFragment.OnNoteClicked {
+public class MainActivity extends AppCompatActivity {
 
-    private static final String ARG_NOTE = "ARG_NOTE";
-    private Notes selectedNote;
-    private NotesListFragment listFragment;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
-
-        listFragment = new NotesListFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, listFragment, null)
-                .commit();
+    public MainActivity() {
+        super(R.layout.activity_main);
     }
 
     @Override
-    public void onNoteClicked(Notes note) {
-        selectedNote = note;
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, listFragment, null)
-                .commit();
-    }
+    public void onBackPressed() {
 
-    @Override
-    protected void onSaveInstanceState(@NonNull Bundle outState) {
-        if (selectedNote != null) {
-            outState.putParcelable(ARG_NOTE, selectedNote);
+        Fragment fragment = getSupportFragmentManager()
+                .findFragmentById(R.id.container_main);
+        if (fragment instanceof OnBackPressed) {
+            boolean result = ((OnBackPressed) fragment).onBackPressed();
+            if (!result) {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
         }
-        super.onSaveInstanceState(outState);
     }
 }

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes.R;
@@ -19,8 +20,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     private final ArrayList<Notes> data = new ArrayList<>();
     private OnNoteClickedListener listener;
 
+    private Fragment fragment;
+
     public OnNoteClickedListener getListener() {
         return listener;
+    }
+
+    public NotesAdapter(Fragment fragment) {
+        this.fragment = fragment;
     }
 
     public void setListener(OnNoteClickedListener listener) {
@@ -53,6 +60,30 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         return data.size();
     }
 
+    public void addNote(Notes note) {
+        data.add(note);
+    }
+
+    public int removeNote(Notes selectedNote) {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).equals(selectedNote)) {
+                data.remove(i);
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int editNote(Notes note) {
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).equals(note)) {
+                data.set(i, note);
+                return i;
+            }
+        }
+        return -1;
+    }
+
     interface OnNoteClickedListener {
         void onNoteClicked(Notes note);
     }
@@ -65,11 +96,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         public NotesViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            fragment.registerForContextMenu(itemView);
+
             itemView.setOnClickListener(view -> {
                 if (getListener() != null) {
                     getListener().onNoteClicked(data.get(getAdapterPosition()));
                 }
-
             });
             title = itemView.findViewById(R.id.note_title);
             date = itemView.findViewById(R.id.note_date);
