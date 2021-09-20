@@ -14,13 +14,13 @@ public class MainFragment extends Fragment implements RouterHolder, OnBackPresse
 
     private Router router;
 
+    public MainFragment() {
+        super(R.layout.main_fragment);
+    }
+
     @Override
     public Router getRouter() {
         return router;
-    }
-
-    public MainFragment() {
-        super(R.layout.main_fragment);
     }
 
     @Override
@@ -35,14 +35,22 @@ public class MainFragment extends Fragment implements RouterHolder, OnBackPresse
         super.onViewCreated(view, savedInstanceState);
 
         if (savedInstanceState == null) {
-            router.showNotesList();
+            if (isAuthorized()) {
+                router.showNotesList();
+            } else {
+                router.showAuth();
+            }
         }
 
         BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottom_nav_view);
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.action_notes) {
-                router.showNotesList();
+                if (isAuthorized()) {
+                    router.showNotesList();
+                } else {
+                    router.showAuth();
+                }
                 return true;
             }
 
@@ -61,5 +69,9 @@ public class MainFragment extends Fragment implements RouterHolder, OnBackPresse
             return true;
         }
         return false;
+    }
+
+    private boolean isAuthorized() {
+        return true;
     }
 }

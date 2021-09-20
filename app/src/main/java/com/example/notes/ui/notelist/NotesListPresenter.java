@@ -4,8 +4,11 @@ import com.example.notes.domain.Callback;
 import com.example.notes.domain.Notes;
 import com.example.notes.domain.NotesRepository;
 
+import java.util.ArrayList;
+
 public class NotesListPresenter {
 
+    private final ArrayList<Notes> notes = new ArrayList<>();
     private NotesListView view;
     private NotesRepository repository;
 
@@ -17,7 +20,10 @@ public class NotesListPresenter {
     public void requestNotes() {
         view.showProgress();
         repository.getNotes(data -> {
-            view.showNotes(data);
+            notes.clear();
+            notes.addAll(data);
+
+            view.showNotes(new ArrayList<>(notes));
             view.hideProgress();
         });
     }
@@ -26,7 +32,9 @@ public class NotesListPresenter {
         view.showProgress();
         repository.addNote(name, details, data -> {
             view.hideProgress();
-            view.onNoteAdded(data);
+            notes.add(data);
+
+            view.showNotes(new ArrayList<>(notes));
         });
     }
 
@@ -34,7 +42,12 @@ public class NotesListPresenter {
         view.showProgress();
         repository.removeNote(selectedNote, data -> {
             view.hideProgress();
-            view.onNoteRemoved(selectedNote);
+            notes.remove(selectedNote);
+            view.showNotes(new ArrayList<>(notes));
         });
+    }
+
+    public void editNote(Notes note) {
+        view.showNotes(new ArrayList<>(notes));
     }
 }

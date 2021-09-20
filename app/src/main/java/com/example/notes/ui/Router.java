@@ -37,4 +37,11 @@ public class Router {
                 .addToBackStack(null)
                 .commit();
     }
+
+    public void showAuth() {
+        fragmentManager
+                .beginTransaction()
+                .replace(R.id.container, new AuthFragment())
+                .commit();
+    }
 }
