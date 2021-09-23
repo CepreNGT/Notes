@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.notes.R;
-import com.example.notes.domain.DeviceNotesRepository;
+import com.example.notes.domain.MockDeviceNotesRepository;
 import com.example.notes.domain.Notes;
 import com.example.notes.ui.Router;
 import com.example.notes.ui.RouterHolder;
@@ -34,8 +34,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
 
     @Override
     public void showNotes(List<Notes> notes) {
-        adapter.setNotes(notes);
-        adapter.notifyDataSetChanged();
+        adapter.submitList(notes);
     }
 
     @Override
@@ -60,23 +59,10 @@ public class NotesListFragment extends Fragment implements NotesListView {
     }
 
     @Override
-    public void onNoteAdded(Notes note) {
-        adapter.addNote(note);
-        adapter.notifyItemInserted(adapter.getItemCount() - 1);
-        container.smoothScrollToPosition(adapter.getItemCount() - 1);
-    }
-
-    @Override
-    public void onNoteRemoved(Notes selectedNote) {
-        int position = adapter.removeNote(selectedNote);
-        adapter.notifyItemRemoved(position);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         adapter = new NotesAdapter(this);
-        presenter = new NotesListPresenter(this, DeviceNotesRepository.INSTANCE);
+        presenter = new NotesListPresenter(this, MockDeviceNotesRepository.INSTANCE);
     }
 
     @Nullable
@@ -93,8 +79,7 @@ public class NotesListFragment extends Fragment implements NotesListView {
                     Notes note = result.getParcelable(NoteDetailFragment.RESULT_NOTE_KEY);
                     boolean removed = result.getBoolean(NoteDetailFragment.REMOVED_NOTE_KEY);
                     if (!removed) {
-                        int index = adapter.editNote(note);
-                        adapter.notifyItemChanged(index);
+                        presenter.editNote(note);
                     } else {
                         presenter.removeNote(note);
                     }
