@@ -64,4 +64,21 @@ public class FireStoreNotesRepository implements NotesRepository {
                 .delete()
                 .addOnSuccessListener(callback::onSuccess);
     }
+
+    @Override
+    public void editNote(Notes note, Callback<Notes> callback) {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put(TITLE, note.getName());
+        data.put(DESCRIPTION, note.getDescription());
+        data.put(CREATED_AT, note.getDate());
+
+        db.collection(NOTES)
+                .document(note.getId())
+                .update(data)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.onSuccess(note);
+                    }
+                });
+    }
 }

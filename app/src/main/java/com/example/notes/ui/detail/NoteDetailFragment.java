@@ -4,12 +4,14 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.notes.R;
 import com.example.notes.domain.Notes;
@@ -59,16 +61,27 @@ public class NoteDetailFragment extends Fragment {
                     .setFragmentResult(KEY_NOTE_RESULT, result);
             getParentFragmentManager().popBackStack();
         });
-
         view.findViewById(R.id.delete_button).setOnClickListener(view12 -> {
-            Bundle result = new Bundle();
-            result.putParcelable(RESULT_NOTE_KEY, note);
-            result.putBoolean(REMOVED_NOTE_KEY, true);
-            getParentFragmentManager()
-                    .setFragmentResult(KEY_NOTE_RESULT, result);
-            getParentFragmentManager().popBackStack();
+            showSimpleAlert(note);
         });
+    }
 
-
+    private void showSimpleAlert(Notes note) {
+        new AlertDialog.Builder(requireContext())
+                .setTitle(R.string.alert_message)
+                .setMessage(R.string.alert_message_2)
+                .setCancelable(true)
+                .setPositiveButton(R.string.alert_positive_button, (dialogInterface, i) -> {
+                    Bundle result = new Bundle();
+                    result.putParcelable(RESULT_NOTE_KEY, note);
+                    result.putBoolean(REMOVED_NOTE_KEY, true);
+                    getParentFragmentManager()
+                            .setFragmentResult(KEY_NOTE_RESULT, result);
+                    Toast.makeText(requireContext(), "Note is deleted", Toast.LENGTH_SHORT).show();
+                    getParentFragmentManager().popBackStack();
+                })
+                .setNegativeButton(R.string.alert_negative_button, (dialogInterface, i) -> {
+                    dialogInterface.cancel();
+                }).show();
     }
 }

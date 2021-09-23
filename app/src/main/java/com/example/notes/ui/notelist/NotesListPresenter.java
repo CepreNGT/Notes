@@ -1,6 +1,5 @@
 package com.example.notes.ui.notelist;
 
-import com.example.notes.domain.Callback;
 import com.example.notes.domain.Notes;
 import com.example.notes.domain.NotesRepository;
 
@@ -48,6 +47,17 @@ public class NotesListPresenter {
     }
 
     public void editNote(Notes note) {
-        view.showNotes(new ArrayList<>(notes));
+        view.showProgress();
+        repository.editNote(note, data -> {
+            view.hideProgress();
+            for (Notes n : notes) {
+                if (n.getId().equals(note.getId())) {
+                    n.setName(note.getName());
+                    n.setDescription(note.getDescription());
+                    n.setDate(note.getDate());
+                }
+            }
+            view.showNotes(new ArrayList<>(notes));
+        });
     }
 }
