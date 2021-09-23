@@ -11,4 +11,9 @@
     <string name="action_save">Save</string>
     <string name="info_fragment_text">INFO</string>
     <string name="action_notes">Notes</string>
+    <string name="alert_title">Are you sure?</string>
+    <string name="alert_message">Are you sure you want to DELETE this note?</string>
+    <string name="alert_positive_button">DELETE</string>
+    <string name="alert_negative_button">Cancel</string>
+    <string name="alert_message_2">If you delete this note, you will never restore it!</string>
 </resources>

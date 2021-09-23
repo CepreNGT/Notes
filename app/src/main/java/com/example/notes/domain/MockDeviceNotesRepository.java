@@ -42,4 +42,9 @@ public class MockDeviceNotesRepository implements NotesRepository {
             handler.post(() -> callback.onSuccess(null));
         }).start();
     }
+
+    @Override
+    public void editNote(Notes note, Callback<Notes> callback) {
+
+    }
 }

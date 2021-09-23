@@ -9,4 +9,6 @@ public interface NotesRepository {
     void addNote(String name, String details, Callback<Notes> callback);
 
     void removeNote(Notes note, Callback<Void> callback);
+
+    void editNote(Notes note, Callback<Notes> callback);
 }
